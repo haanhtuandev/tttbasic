@@ -7,7 +7,7 @@ public class App
     public static void main( String[] args )
     {
         Board board = new Board(3);
-        Player player1 = new BotPlayer(2);
+        Player player1 = new HumanPlayer(2);
         Player player2 = new HumanPlayer(1);
 
         Game game = new Game();

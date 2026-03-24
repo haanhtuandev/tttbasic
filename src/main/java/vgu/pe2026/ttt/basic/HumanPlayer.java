@@ -15,7 +15,7 @@ public class HumanPlayer extends Player {
         System.out.println("Player" + symbol +"'s move: ");
         int move = scanner.nextInt();
         
-        
+        // loop to handle invalid input
         while (board.setCell(move, symbol) != true){
             System.out.println("Invalid move!");     
             System.out.println("Player" + symbol +"'s move: ");            
