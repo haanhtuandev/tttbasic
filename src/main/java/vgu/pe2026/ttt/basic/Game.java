@@ -11,14 +11,10 @@ public class Game {
         if (players == null) {
             throw new IllegalStateException("Players list must be set before sorting!");
         }
-        if (turn == 1){
-            players.sort(Comparator.comparing(Player::getSymbol));
-        }
-        else if (turn == 2) {
-            players.sort(Comparator.comparing(Player::getSymbol).reversed());
-        }
-        else {
-            throw new IllegalArgumentException("Invalid argument");
+        switch (turn) {
+            case 1  -> players.sort(Comparator.comparing(Player::getSymbol));
+            case 2  -> players.sort(Comparator.comparing(Player::getSymbol).reversed());
+            default -> throw new IllegalArgumentException("Invalid argument: " + turn);
         }
     }
 
