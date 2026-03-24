@@ -15,16 +15,17 @@ public class App
         game.setBoard(board);
 
         if (args.length != 1){
-            System.err.println("Invalid arguments (not enough arguments)");
-            return;
+            System.err.println("Invalid arguments");
+            System.exit(1);
         }
 
         try {
             int turn = Integer.parseInt(args[0]);
-            game.setTurn(turn);
+            game.setStartingPlayer(turn);
         }
-        catch(NumberFormatException e){
-            System.err.println("Invalid arguments");
+        catch(Exception e){
+            System.err.println("Invalid arguments (only 1 or 2 is accepted)");
+            System.exit(1);
         }
         game.play();
         

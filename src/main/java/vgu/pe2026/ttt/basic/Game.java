@@ -4,15 +4,10 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Game {
-    private int turn;
     private Board board;
     private List<Player> players;
 
-    public Game(){
-        this.players = new ArrayList<>();
-    }
-
-    public void setTurn(int turn){
+    public void setStartingPlayer(int turn){
         if (players == null) {
             throw new IllegalStateException("Players list must be set before sorting!");
         }
@@ -22,11 +17,11 @@ public class Game {
         else if (turn == 2) {
             players.sort(Comparator.comparing(Player::getSymbol).reversed());
         }
+        else {
+            throw new IllegalArgumentException("Invalid argument");
+        }
     }
 
-    public int getTurn(){
-        return this.turn;
-    }
 
     public Board getBoard(){
         return this.board;
