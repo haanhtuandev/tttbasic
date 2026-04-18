@@ -6,17 +6,17 @@ public class App
 {
     public static void main( String[] args )
     {
-        Board board = new Board(3);
-        Player player1 = new HumanPlayer(2);
-        Player player2 = new HumanPlayer(1);
+        Board board = new Board(3, System.out);
+        Player player1 = new HumanPlayer(2, System.in);
+        Player player2 = new HumanPlayer(1, System.in);
 
         Game game = new Game();
         game.setPlayers(List.of(player1, player2));
         game.setBoard(board);
 
         if (args.length != 1){
-            System.err.println("Invalid arguments");
-            System.exit(1);
+            System.out.println("Please, input a valid option [1-2]");
+            return;
         }
 
         try {
@@ -24,8 +24,8 @@ public class App
             game.setStartingPlayer(turn);
         }
         catch(Exception e){
-            System.err.println("Invalid arguments (only 1 or 2 is accepted)");
-            System.exit(1);
+            System.out.println("Please, input a valid option [1-2]");
+            return;
         }
         game.play();
         

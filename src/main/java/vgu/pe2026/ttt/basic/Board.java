@@ -1,26 +1,46 @@
 package vgu.pe2026.ttt.basic;
-
+import java.io.PrintStream;
 
 public class Board {
-    private int[][] grid;
+    private final int[][] grid;
     private int size;
-
-    public Board(int size){
+    PrintStream printer;
+    public Board(int size, PrintStream printer){
         this.size = size;
+        this.printer = printer;
         grid = new int[size][size];
     }
 
     public boolean setCell(int move, int symbol) {
-        int row = mapMoveToCoordinate(move, this.size)[0];
-        int col = mapMoveToCoordinate(move, this.size)[1];
+        int row = (move  - 1)/ 3;
+        int col = (move - 1) % 3;
+        // if (isValidMove(row, col)){
+        grid[row][col] = symbol;
+        //     return true;
+        // }
+        return true;
+        
+    }
+
+    public boolean isValidMove(int row, int col){
         if (row < 0 || row >= size || col < 0 || col >= size) {            
             return false;
-        }         
-        if (grid[row][col] != 0) {             
-            return false;  // Cell already occupied
         }
-        grid[row][col] = symbol;
-        return true;
+        return grid[row][col] != 0;
+        
+    }
+
+    public void setBoard(int[][] mockCoordinate){
+        for (int i = 0; i < size ; i++) { 
+            for (int j = 0; j < size; j++){
+                grid[i][j] = mockCoordinate[i][j];
+            }
+        }
+        
+    }
+
+    public int[][] getGrid(){
+        return this.grid;
     }
 
 
@@ -32,32 +52,76 @@ public class Board {
         this.size = size;
     }
 
-    // public int[][] getGrid(){
-    //     return this.grid;
-    // }
     public int getSize(){
         return this.size;
     }
-    private int[] mapMoveToCoordinate(int choice, int size){
-        int row = (choice - 1) / size;
-        int col = (choice - 1) % size;
-        return new int[]{row, col};
-    }
-
 
     public void render(){
-        // System.out.println("-------------------\nTIC TAC TOE\n");
-        System.err.println("\n");
+        // printer.print(System.lineSeparator());
         for (int row = 0; row < size; row++){
-            System.out.print("| ");
+            printer.print("| ");
             for (int col = 0; col < size; col++){
-                System.out.print(grid[row][col] + " | ");
+                printer.print(grid[row][col] + " | ");
             }
-            System.out.println("\n");
+            printer.print(System.lineSeparator());
         }
-        System.err.println("\n");
-        // System.out.println("\n-------------------");
-
     }
- 
+    public boolean checkFull(){
+        for (int row = 0; row < size; row++){
+            for (int col = 0; col < size; col++){
+                if (grid[row][col] == 0){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public boolean checkWin(int symbol){
+
+        // Check rows
+        for (int row = 0; row < size; row++) {
+            boolean rowMatch = true;
+            for (int col = 0; col < size; col++) {
+                if (grid[row][col] != symbol) {
+                    rowMatch = false;
+                    break;
+                }
+            }
+            if (rowMatch) return true;
+        }
+        
+        // Check columns
+        for (int col = 0; col < size; col++) {
+            boolean colMatch = true;
+            for (int row = 0; row < size; row++) {
+                if (grid[row][col] != symbol) {
+                    colMatch = false;
+                    break;
+                }
+            }
+            if (colMatch) return true;
+        }
+        
+        // Check main diagonal (top-left to bottom-right)
+        boolean mainDiag = true;
+        for (int i = 0; i < size; i++) {
+            if (grid[i][i] != symbol) {
+                mainDiag = false;
+                break;
+            }
+        }
+        if (mainDiag) return true;
+        
+        // Check anti-diagonal (top-right to bottom-left)
+        boolean antiDiag = true;
+        for (int i = 0; i < size; i++) {
+            if (grid[i][size-i-1]!= symbol) {
+                antiDiag = false;
+                break;
+            }
+        }
+        if (antiDiag) return true;
+        
+        return false;
+    }
 }

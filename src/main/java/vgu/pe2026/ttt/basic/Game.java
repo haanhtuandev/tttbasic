@@ -37,83 +37,30 @@ public class Game {
 
     public void play(){
         board.render();
-        while (true){
-            for (Player player : players) {
-                player.makeMove(board);
-                board.render();
-                if (checkWin(player)){
-                    System.out.println( "Player" + player.getSymbol() + " won");
-                    return;
-                }
-                if (checkFull()){
-                    System.out.println("Draw");
-                    return;
+        Thread gameThread = new Thread(
+            () -> {
+                while (true){
+                    for (Player player : players) {
+                        player.makeMove(board);
+                        board.render();
+                        if (board.checkWin(player.symbol)){
+                            System.out.println( "Player" + player.getSymbol() + " won");
+                            return;
+                        }
+                        if (board.checkFull()){
+                            System.out.println("Draw");
+                            return;
+                        }
+                    }
                 }
             }
-        }
+        );
+        gameThread.start();
+
+
+        
     }
 
-    public boolean checkWin(Player player){
-        int size = board.getSize();
-        int symbol = player.getSymbol();
-        
-        // Check rows
-        for (int row = 0; row < size; row++) {
-            boolean rowMatch = true;
-            for (int col = 0; col < size; col++) {
-                if (board.getCell(row, col) != symbol) {
-                    rowMatch = false;
-                    break;
-                }
-            }
-            if (rowMatch) return true;
-        }
-        
-        // Check columns
-        for (int col = 0; col < size; col++) {
-            boolean colMatch = true;
-            for (int row = 0; row < size; row++) {
-                if (board.getCell(row, col) != symbol) {
-                    colMatch = false;
-                    break;
-                }
-            }
-            if (colMatch) return true;
-        }
-        
-        // Check main diagonal (top-left to bottom-right)
-        boolean mainDiag = true;
-        for (int i = 0; i < size; i++) {
-            if (board.getCell(i, i) != symbol) {
-                mainDiag = false;
-                break;
-            }
-        }
-        if (mainDiag) return true;
-        
-        // Check anti-diagonal (top-right to bottom-left)
-        boolean antiDiag = true;
-        for (int i = 0; i < size; i++) {
-            if (board.getCell(i,size-i-1) != symbol) {
-                antiDiag = false;
-                break;
-            }
-        }
-        if (antiDiag) return true;
-        
-        return false;
-    }
-
-    public boolean checkFull(){
-        for (int row = 0; row < board.getSize(); row++){
-            for (int col = 0; col < board.getSize(); col++){
-                if (board.getCell(row, col) == 0){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 
     
 }
