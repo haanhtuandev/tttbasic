@@ -1,17 +1,15 @@
 package vgu.pe2026.ttt.basic;
 
-import java.util.List;
-
 public class App 
 {
     public static void main( String[] args )
     {
         Board board = new Board(3, System.out);
-        Player player1 = new HumanPlayer(2, System.in);
-        Player player2 = new HumanPlayer(1, System.in);
+        Player player1 = new HumanPlayer(1, System.in);
+        Player player2 = new BotPlayer(2);
 
         Game game = new Game();
-        game.setPlayers(List.of(player1, player2));
+        game.setPlayers(player1, player2);
         game.setBoard(board);
 
         if (args.length != 1){

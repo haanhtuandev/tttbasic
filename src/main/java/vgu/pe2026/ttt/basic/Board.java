@@ -11,23 +11,19 @@ public class Board {
         grid = new int[size][size];
     }
 
-    public boolean setCell(int move, int symbol) {
-        int row = (move  - 1)/ 3;
-        int col = (move - 1) % 3;
-        // if (isValidMove(row, col)){
+    public void setCell(int cell, int symbol) {
+        int row = (cell  - 1)/ size;
+        int col = (cell - 1) % size;
         grid[row][col] = symbol;
-        //     return true;
-        // }
-        return true;
-        
     }
 
-    public boolean isValidMove(int row, int col){
+    public boolean isValidMove(int cell){
+        int row = (cell  - 1)/ size;
+        int col = (cell - 1) % size;
         if (row < 0 || row >= size || col < 0 || col >= size) {            
             return false;
         }
-        return grid[row][col] != 0;
-        
+        return grid[row][col] == 0;
     }
 
     public void setBoard(int[][] mockCoordinate){

@@ -5,9 +5,9 @@ public class BotPlayer extends Player {
     }
     @Override
     public void makeMove(Board board){
-        System.out.println("Player" + symbol +"'s move: ");
         for (int cell = 1; cell <= board.getSize()*board.getSize(); cell++){
-            if (board.setCell(cell, symbol)){
+            if (board.isValidMove(cell)){
+                board.setCell(cell, symbol);
                 return;
             }
         }

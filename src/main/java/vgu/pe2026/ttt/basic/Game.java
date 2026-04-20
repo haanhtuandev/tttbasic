@@ -1,66 +1,62 @@
 package vgu.pe2026.ttt.basic;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public class Game {
     private Board board;
-    private List<Player> players;
+
+    private Player playerOne;
+    private Player playerTwo;
+    private Player currentPlayingPlayer;
 
     public void setStartingPlayer(int turn){
-        if (players == null) {
-            throw new IllegalStateException("Players list must be set before sorting!");
-        }
-        switch (turn) {
-            case 1  -> players.sort(Comparator.comparing(Player::getSymbol));
-            case 2  -> players.sort(Comparator.comparing(Player::getSymbol).reversed());
-            default -> throw new IllegalArgumentException("Invalid argument: " + turn);
+        if (turn == 1){
+            currentPlayingPlayer = playerOne;
+        } else {
+            currentPlayingPlayer = playerTwo;
         }
     }
-
 
     public Board getBoard(){
         return this.board;
     }
 
-
-
-    public void setPlayers(List<Player> players){
-        this.players = new ArrayList<>(players);
+    public void setPlayers(Player playerOne, Player playerTwo){
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
     }
 
     public void setBoard(Board board){
         this.board = board;
     }
 
+    public void switchTurn(){
+        if (currentPlayingPlayer == playerOne){
+            currentPlayingPlayer = playerTwo;
+        } else {
+            currentPlayingPlayer = playerOne;
+        }
+    }
     
-
     public void play(){
+        System.out.print("Hello!" + System.lineSeparator());
         board.render();
         Thread gameThread = new Thread(
             () -> {
                 while (true){
-                    for (Player player : players) {
-                        player.makeMove(board);
-                        board.render();
-                        if (board.checkWin(player.symbol)){
-                            System.out.println( "Player" + player.getSymbol() + " won");
-                            return;
-                        }
-                        if (board.checkFull()){
-                            System.out.println("Draw");
-                            return;
-                        }
+                    System.out.println("Player#" + currentPlayingPlayer.symbol +"'s move: ");
+                    currentPlayingPlayer.makeMove(board);
+                    board.render();
+                    if (board.checkWin(currentPlayingPlayer.symbol)){
+                        System.out.println( "Player#" + currentPlayingPlayer.getSymbol() + " won!");
+                        return;
                     }
+                    if (board.checkFull()){
+                        System.out.println("It is a draw!");
+                        return;
+                    }
+                    switchTurn();
                 }
             }
         );
-        gameThread.start();
-
-
-        
-    }
-
-
-    
+        gameThread.start();   
+    }   
 }
