@@ -12,27 +12,31 @@ public class HumanPlayer extends Player {
 
 
     @Override
-    public void makeMove(Board board){   
-        String input = scanner.nextLine();
+    public boolean makeMove(Board board) {
+        while (true) {
+            System.out.println("Player#" + symbol + "'s move: ");
+            String input = scanner.nextLine();
 
-        while(isInteger(input) != true){
-            if (input.equals("q")){
-                System.exit(0);
+            if (input.equals("q")) {
+                return false;
             }
-            System.out.println("Please, input a valid number [1-9]");
-            System.out.println("Player" + symbol +"'s move: ");
-            input = scanner.nextLine();
-        }
-       
-        while(board.isValidMove(Integer.parseInt(input)) == false){
-            System.out.println("The cell is occupied!");
-            System.out.println("Player" + symbol +"'s move: ");
-            input = scanner.nextLine();
-        }
-        int move = Integer.parseInt(input);
-        board.setCell(move, symbol);
+            if (!isInteger(input)) {
+                System.out.println("Please, input a valid number [1-9]");
+                continue; 
+            }
 
+            int move = Integer.parseInt(input);
+
+            if (!board.isValidMove(move)) {
+                System.out.println("The cell is occupied!");
+                continue;
+            }
+
+            board.setCell(move, symbol);
+            return true;
+        }
     }
+
 
     public static boolean isInteger(String str){
         if (str == null){

@@ -1,6 +1,9 @@
-package vgu.pe2026.ttt.basic;
+package vgu.pe2026.ttt.server;
+
+import java.io.PrintStream;
 
 public class Game {
+    
     private Board board;
 
     private Player playerOne;
@@ -36,27 +39,26 @@ public class Game {
         }
     }
     
-    public void play(){
-        System.out.print("Hello!" + System.lineSeparator());
+    public void play(PrintStream printer){
+        printer.print("Hello!" + System.lineSeparator());
         board.render();
 
         while (true){
             if (currentPlayingPlayer.makeMove(board) == false){
-                System.out.println("End of the game");
+                printer.println("End of the game");
                 return;
             }
             board.render();
             if (board.checkWin(currentPlayingPlayer.getSymbol())){
-                System.out.println( "Player#" + currentPlayingPlayer.getSymbol() + " won!");
+                printer.println( "Player#" + currentPlayingPlayer.getSymbol() + " won!");
                 return;
             }
             if (board.checkFull()){
-                System.out.println("It is a draw!");
+                printer.println("It is a draw!");
                 return;
             }
             switchTurn();
         }
-    }
+    }   
 }
-
 

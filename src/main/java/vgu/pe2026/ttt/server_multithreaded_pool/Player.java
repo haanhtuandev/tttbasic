@@ -1,8 +1,10 @@
-package vgu.pe2026.ttt.basic;
+package vgu.pe2026.ttt.server_multithreaded_pool;
 
+import java.io.PrintStream;
 
 public abstract class Player {
     protected int symbol;
+    private PrintStream printer;
 
     public int getSymbol(){
         return symbol;
